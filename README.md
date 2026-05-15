@@ -74,10 +74,6 @@ Six hex blocks cover the inlet plenum and the flame domain:
 The mesh is intentionally coarse — consistent with the published tutorial — and is intended to
 demonstrate the solver setup and post-processing workflow rather than a grid-converged result.
 
-### Mesh preview
-
-![Mesh](images/sandia-mesh.png)
-
 ---
 
 ## Boundary Conditions
