@@ -9,36 +9,11 @@ FoamFile
 {
     format      ascii;
     class       dictionary;
-    location    "chemkin";
-    object      transportProperties;
+    object      functions;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-".*"
-{
-    transport
-    {
-        As 1.512e-06;
-        Ts 120.;
-    }
-}
-
-"H2"
-{
-    transport
-    {
-        As 6.362e-07;
-        Ts 72.;
-    }
-}
-
-"CO2"
-{
-    transport
-    {
-        As 1.572e-06;
-        Ts 240.;
-    }
-}
+#includeFunc residuals
+#includeFunc sampleDict
 
 // ************************************************************************* //

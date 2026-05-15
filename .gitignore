@@ -1,14 +1,25 @@
-# OpenFOAM runtime output
-*/[1-9]*
-*/0.*
-log.*
-*.foam
-*.OpenFOAM
-*.OpenFoam
-postProcessing/
+# Generated mesh — recreated by blockMesh
+case/sandiaD_LTS/constant/polyMesh/
 
-# Local tooling
-.DS_Store
-.vscode/
+# Generated chemistry files — recreated by chemkinToFoam
+case/sandiaD_LTS/constant/reactionsGRI
+case/sandiaD_LTS/constant/reactionsGRI.orig
+case/sandiaD_LTS/constant/thermo.compressibleGasGRI
+case/sandiaD_LTS/constant/thermo.compressibleGasGRI.orig
+
+# Solver time directories (1500, 5000, etc. — not the 0/ initial conditions)
+case/sandiaD_LTS/[1-9]*/
+
+# ISAT/TDAC chemistry tables — rebuilt on first reacting run
+case/sandiaD_LTS/TDAC/
+
+# Solver output
+case/sandiaD_LTS/postProcessing/
+case/sandiaD_LTS/log.*
+
+# External reference data — download from TNF Workshop (see README)
+.tmp/
+
+# Python cache
 __pycache__/
 *.pyc

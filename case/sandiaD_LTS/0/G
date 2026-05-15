@@ -8,37 +8,36 @@
 FoamFile
 {
     format      ascii;
-    class       dictionary;
-    location    "chemkin";
-    object      transportProperties;
+    class       volScalarField;
+    object      G;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-".*"
+dimensions      [1 0 -3 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
 {
-    transport
+    ".*"
     {
-        As 1.512e-06;
-        Ts 120.;
+        type            MarshakRadiation;
+        T               T;
+        emissivityMode  lookup;
+        emissivity      uniform 1.0;
+        value           uniform 0;
+    }
+
+    frontAndBack_pos
+    {
+        type            wedge;
+    }
+
+    frontAndBack_neg
+    {
+        type            wedge;
     }
 }
 
-"H2"
-{
-    transport
-    {
-        As 6.362e-07;
-        Ts 72.;
-    }
-}
-
-"CO2"
-{
-    transport
-    {
-        As 1.572e-06;
-        Ts 240.;
-    }
-}
 
 // ************************************************************************* //

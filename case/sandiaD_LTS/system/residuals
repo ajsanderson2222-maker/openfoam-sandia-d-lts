@@ -1,44 +1,21 @@
 /*--------------------------------*- C++ -*----------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Version:  13
+   \\    /   O    peration   | Website:  https://openfoam.org
+    \\    /     A nd         | Version:  13
      \\/     M anipulation  |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
     format      ascii;
     class       dictionary;
-    location    "chemkin";
-    object      transportProperties;
+    location    "system";
+    object      residuals;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-".*"
-{
-    transport
-    {
-        As 1.512e-06;
-        Ts 120.;
-    }
-}
+#includeEtc "caseDicts/functions/numerical/residuals.cfg"
 
-"H2"
-{
-    transport
-    {
-        As 6.362e-07;
-        Ts 72.;
-    }
-}
-
-"CO2"
-{
-    transport
-    {
-        As 1.572e-06;
-        Ts 240.;
-    }
-}
+fields (U p T CH4 O2 CO2 H2O CO OH k epsilon);
 
 // ************************************************************************* //

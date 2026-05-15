@@ -1,39 +1,38 @@
 #!/bin/sh
-cd "${0%/*}" || exit                                # Run from this directory
-. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
-#------------------------------------------------------------------------------
+cd ${0%/*} || exit 1    # Run from this directory
 
-# Application name
-application=$(getApplication)
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
 
-restore0Dir
+# Phase 1: cold flow to 1500 (skipped if the 1500 restart directory exists)
+if [ ! -d 1500 ]; then
+    runApplication chemkinToFoam \
+        chemkin/grimech30.dat chemkin/thermo30.dat chemkin/transportProperties \
+        constant/reactionsGRI constant/thermo.compressibleGasGRI
 
-runApplication chemkinToFoam \
-    chemkin/grimech30.dat chemkin/thermo30.dat chemkin/transportProperties \
-    constant/reactionsGRI constant/thermo.compressibleGasGRI
+    for src in system/controlDict.orig constant/chemistryProperties.orig 0/*.orig
+    do
+        [ -f "$src" ] || continue
+        cp "$src" "${src%.orig}"
+    done
 
-runApplication blockMesh
-runApplication setFields
+    runApplication blockMesh
+    runApplication setFields
 
-if isTest $@
-then
-    # Test without chemistry
-    foamDictionary constant/chemistryProperties -entry chemistry -set off
-    runApplication $application
-else
-    # Run without chemistry until 1500 to let the flow field develop
-    foamDictionary system/controlDict -entry writeInterval -set 1500
-    foamDictionary system/controlDict -entry endTime -set 1500
-    foamDictionary constant/chemistryProperties -entry chemistry -set off
+    runApplication -a foamDictionary -entry "startTime"     -set "0"    system/controlDict
+    runApplication -a foamDictionary -entry "writeInterval" -set "1500" system/controlDict
+    runApplication -a foamDictionary -entry "endTime"       -set "1500" system/controlDict
+    runApplication -a foamDictionary -entry "chemistry"     -set "off"  constant/chemistryProperties
 
-    runApplication $application
-
-    # Run with chemistry until flame reaches its full size
-    foamDictionary system/controlDict -entry writeInterval -set 100
-    foamDictionary system/controlDict -entry endTime -set 5000
-    foamDictionary constant/chemistryProperties -entry chemistry -set on
-
-    runApplication -o $application
+    runApplication foamRun
 fi
+
+# Phase 2: reacting flow 1500 → 5000
+runApplication -a foamDictionary -entry "startTime"     -set "1500" system/controlDict
+runApplication -a foamDictionary -entry "writeInterval" -set "100"  system/controlDict
+runApplication -a foamDictionary -entry "endTime"       -set "5000" system/controlDict
+runApplication -a foamDictionary -entry "chemistry"     -set "on"   constant/chemistryProperties
+
+runApplication foamRun
 
 #------------------------------------------------------------------------------

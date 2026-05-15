@@ -9,36 +9,18 @@ FoamFile
 {
     format      ascii;
     class       dictionary;
-    location    "chemkin";
-    object      transportProperties;
+    location    "constant";
+    object      momentumTransport;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-".*"
-{
-    transport
-    {
-        As 1.512e-06;
-        Ts 120.;
-    }
-}
+simulationType   RAS;
 
-"H2"
+RAS
 {
-    transport
-    {
-        As 6.362e-07;
-        Ts 72.;
-    }
-}
+    model           kEpsilon;
 
-"CO2"
-{
-    transport
-    {
-        As 1.572e-06;
-        Ts 240.;
-    }
+    turbulence      on;
 }
 
 // ************************************************************************* //
