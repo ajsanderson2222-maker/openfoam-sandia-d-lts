@@ -1,0 +1,14 @@
+# OpenFOAM runtime output
+*/[1-9]*
+*/0.*
+log.*
+*.foam
+*.OpenFOAM
+*.OpenFoam
+postProcessing/
+
+# Local tooling
+.DS_Store
+.vscode/
+__pycache__/
+*.pyc
